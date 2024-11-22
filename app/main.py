@@ -1,8 +1,13 @@
-version = "0.0.1"
+from fastapi import FastAPI
+from endpoints import version
 
-def get_version():
-    return str(f"version = {version}")
+app = FastAPI()
 
+@app.get("/version")
+async def get_version():
+    app_version = version.list_version()
+    return {f"Version: {app_version}"}
 
-if __name__ == "__main__":
-    print(get_version())
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
