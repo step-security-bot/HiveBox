@@ -3,7 +3,6 @@ import requests
 from datetime import datetime
 
 # todo:
-# remove the double call to the api from get_open_sense_boxes
 # time with and without sessions
 # see if parallelizing individual sensebox calls speeds up even more
 
@@ -11,16 +10,15 @@ def avg_temperature():
     with requests.Session() as session:
         result = []
         ids = get_open_sense_boxes(session)
-        ids = recent_sense_boxes(ids, session)
-        #ids = ["5ad4cf6d223bd8001939172d", "5ad4cfdc223bd80019392774"]
+        ids = recent_sense_boxes(ids)
+
         for id in ids:
             temp = get_sense_box_temp(id, session)
             if temp is not None:
                 result.append(temp)
+
         print(result)
         return result
-
-
 
 
 def get_sense_box_temp(id: str, session):
@@ -32,10 +30,7 @@ def get_sense_box_temp(id: str, session):
     '''
     
     url = "https://api.opensensemap.org/boxes/"
-    # temporary ID
-    #id = "5ad4cf6d223bd8001939172d"
 
-    #with requests.Session() as session:
     response = session.get(url + id)
     response = response.json()
     # Loop over sensors list in the response
@@ -45,14 +40,13 @@ def get_sense_box_temp(id: str, session):
             return sensor["lastMeasurement"]["value"]
 
 
-def recent_sense_boxes(sense_boxes: dict, session):
+def recent_sense_boxes(sense_boxes: dict):
     ''' 
     Returns a list of sense box IDs, for sense boxes that have an updatedAt property of less than or equal to 1 hour
 
     Parameters: None
     
     '''
-    sense_boxes = get_open_sense_boxes(session)
     recent_boxes = []
 
     now_str = datetime.now().isoformat(timespec="milliseconds") + "Z"
@@ -79,8 +73,6 @@ def get_open_sense_boxes(session):
     # this bounding box roughly represents WA state
     args = {"bbox": "-124,47,-121,49"}
 
-    #with requests.Session() as session:
-    print("running get_open_sense_boxes")
     response = session.get(url, params=args)
     response = response.json()
 
