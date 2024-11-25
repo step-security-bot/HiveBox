@@ -15,5 +15,5 @@ async def get_version():
 
 @app.get("/temperature")
 async def get_temperature():
-    data = temperature.get_sense_box_temp()
+    data = temperature.avg_temperature()
     return data
