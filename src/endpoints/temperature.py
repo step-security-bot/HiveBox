@@ -2,6 +2,7 @@ import asyncio
 import requests
 from datetime import datetime
 from time import perf_counter
+import json
 
 # avg time without sessions: 8.5 best 5 worst 32
 # avg time with sessions: 2.2 best 1.8 worst 2.4
@@ -93,7 +94,6 @@ def get_open_sense_boxes(session):
 
     response = session.get(url, params=args)
     response = response.json()
-
     stop = perf_counter()
     print(f"Intial API call took {stop - start} seconds")
 
