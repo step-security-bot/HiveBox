@@ -18,12 +18,12 @@ async def avg_temperature():
     """
     start = perf_counter()
     with requests.Session() as session:
-        ids = get_open_sense_boxes(session)
-        ids = recent_sense_boxes(ids)
+        sb_ids = get_open_sense_boxes(session)
+        sb_ids = recent_sense_boxes(sb_ids)
 
         loop = asyncio.get_event_loop()
         futures = [
-            loop.run_in_executor(None, get_sense_box_temp, id, session) for id in ids
+            loop.run_in_executor(None, get_sense_box_temp, sb_id, session) for sb_id in sb_ids
         ]
 
         results = await asyncio.gather(*futures)
@@ -35,7 +35,7 @@ async def avg_temperature():
         return round(avg, 3)
 
 
-def get_sense_box_temp(id: str, session):
+def get_sense_box_temp(sb_id: str, session):
     """
     Returns the temperature for a given sense box ID.
 
@@ -43,24 +43,27 @@ def get_sense_box_temp(id: str, session):
 
     """
     url = "https://api.opensensemap.org/boxes/"
-
     start = perf_counter()
-    response = session.get(url + id)
+
+    print(f"current sb_id is {sb_id}")
+    response = session.get(url + sb_id)
     response = response.json()
+
     # Loop over sensors list in the response
     for sensor in response["sensors"]:
         # if "temp" is in the title of the sensor, we can assume it is measuring temperature. We also check that the lastMeasurement exists so we don't collect NoneType results
         if "temp" in sensor["title"].casefold() and sensor["lastMeasurement"]:
             stop = perf_counter()
-            print(f"Api call for id {id} took {stop - start} seconds")
+            print(f"Api call for sb_id {sb_id} took {stop - start} seconds")
             return sensor["lastMeasurement"]["value"]
 
 
-def recent_sense_boxes(sense_boxes: dict):
+
+def recent_sense_boxes(sense_boxes: list):
     """
     Returns a list of sense box IDs, for sense boxes that have an updatedAt property of less than or equal to 1 hour
 
-    Parameters: None
+    Parameters: sense_boxes: a list of dicts
 
     """
     recent_boxes = []
@@ -76,12 +79,13 @@ def recent_sense_boxes(sense_boxes: dict):
             recent_boxes.append(sense_box["_id"])
     stop = perf_counter()
     print(f"filtering results took {stop - start} seconds")
+    print(recent_boxes)
     return recent_boxes
 
 
 def get_open_sense_boxes(session):
     """
-    Returns a dict of sense boxes within the specified bounding box
+    Returns a list of sense boxes within the specified bounding box
 
     Parameters: None
 

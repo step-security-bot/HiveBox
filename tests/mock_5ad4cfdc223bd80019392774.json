@@ -1,0 +1,68 @@
+{
+    "_id": "5ad4cfdc223bd80019392774",
+    "createdAt": "2022-03-30T11:25:43.526Z",
+    "updatedAt": "2022-03-30T11:25:43.526Z",
+    "name": "Luftdaten.info 1061656",
+    "currentLocation": {
+      "type": "Point",
+      "coordinates": [
+        -122.173644,
+        47.677756,
+        400
+      ],
+      "timestamp": "2018-05-11T06:01:33.065Z"
+    },
+    "grouptag": [
+      "Luftdaten.info"
+    ],
+    "exposure": "outdoor",
+    "sensors": [
+      {
+        "title": "PM10",
+        "unit": "µg/m³",
+        "sensorType": "SDS 011",
+        "icon": "osem-cloud",
+        "_id": "5ad4cfdc223bd80019392778",
+        "lastMeasurement": null
+      },
+      {
+        "title": "PM2.5",
+        "unit": "µg/m³",
+        "sensorType": "SDS 011",
+        "icon": "osem-cloud",
+        "_id": "5ad4cfdc223bd80019392777",
+        "lastMeasurement": null
+      },
+      {
+        "title": "Temperatur",
+        "unit": "°C",
+        "sensorType": "DHT22",
+        "icon": "osem-thermometer",
+        "_id": "5ad4cfdc223bd80019392776",
+        "lastMeasurement": null
+      },
+      {
+        "title": "rel. Luftfeuchte",
+        "unit": "%",
+        "sensorType": "DHT22",
+        "icon": "osem-humidity",
+        "_id": "5ad4cfdc223bd80019392775",
+        "lastMeasurement": null
+      }
+    ],
+    "model": "luftdaten_sds011_dht22",
+    "loc": [
+      {
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.173644,
+            47.677756,
+            400
+          ],
+          "timestamp": "2018-05-11T06:01:33.065Z"
+        },
+        "type": "Feature"
+      }
+    ]
+  }

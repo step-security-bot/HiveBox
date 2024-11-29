@@ -1,0 +1,81 @@
+{
+    "_id": "5ad4cf6d223bd8001939172d",
+    "createdAt": "2022-03-30T11:25:43.526Z",
+    "updatedAt": "2023-07-22T18:08:28.916Z",
+    "name": "Luftdaten.info 14208651",
+    "currentLocation": {
+      "type": "Point",
+      "coordinates": [
+        -122.173655,
+        47.677669,
+        400
+      ],
+      "timestamp": "2018-05-11T05:59:23.068Z"
+    },
+    "grouptag": [
+      "Luftdaten.info"
+    ],
+    "exposure": "outdoor",
+    "sensors": [
+      {
+        "title": "PM10",
+        "unit": "µg/m³",
+        "sensorType": "SDS 011",
+        "icon": "osem-cloud",
+        "_id": "5ad4cf6d223bd80019391731",
+        "lastMeasurement": {
+          "value": "1.57",
+          "createdAt": "2023-07-22T18:08:28.813Z"
+        }
+      },
+      {
+        "title": "PM2.5",
+        "unit": "µg/m³",
+        "sensorType": "SDS 011",
+        "icon": "osem-cloud",
+        "_id": "5ad4cf6d223bd80019391730",
+        "lastMeasurement": {
+          "value": "1.47",
+          "createdAt": "2023-07-22T18:08:28.813Z"
+        }
+      },
+      {
+        "title": "Temperatur",
+        "unit": "°C",
+        "sensorType": "DHT22",
+        "icon": "osem-thermometer",
+        "_id": "5ad4cf6d223bd8001939172f",
+        "lastMeasurement": {
+          "value": "20.40",
+          "createdAt": "2023-07-22T18:08:28.813Z"
+        }
+      },
+      {
+        "title": "rel. Luftfeuchte",
+        "unit": "%",
+        "sensorType": "DHT22",
+        "icon": "osem-humidity",
+        "_id": "5ad4cf6d223bd8001939172e",
+        "lastMeasurement": {
+          "value": "99.90",
+          "createdAt": "2023-07-22T18:08:28.813Z"
+        }
+      }
+    ],
+    "model": "luftdaten_sds011_dht22",
+    "lastMeasurementAt": "2023-07-22T18:08:28.813Z",
+    "loc": [
+      {
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -122.173655,
+            47.677669,
+            400
+          ],
+          "timestamp": "2018-05-11T05:59:23.068Z"
+        },
+        "type": "Feature"
+      }
+    ]
+  }

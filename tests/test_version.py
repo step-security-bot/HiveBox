@@ -1,5 +1,5 @@
 from ..src.endpoints import version
 
 def test_list_version():
-    version_number = "0.0.3"
+    version_number = "0.0.4"
     assert version.list_version() == version_number
