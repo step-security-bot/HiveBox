@@ -45,7 +45,6 @@ def get_sense_box_temp(sb_id: str, session):
     url = "https://api.opensensemap.org/boxes/"
     start = perf_counter()
 
-    print(f"current sb_id is {sb_id}")
     response = session.get(url + sb_id)
     response = response.json()
 
