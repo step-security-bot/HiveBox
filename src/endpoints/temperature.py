@@ -21,18 +21,22 @@ async def avg_temperature():
         sb_ids = get_open_sense_boxes(session)
         sb_ids = recent_sense_boxes(sb_ids)
 
-        loop = asyncio.get_event_loop()
-        futures = [
-            loop.run_in_executor(None, get_sense_box_temp, sb_id, session) for sb_id in sb_ids
-        ]
-
-        results = await asyncio.gather(*futures)
-        # filter out null results
-        results = [float(result) for result in results if result is not None]
+        results = await get_all_sense_box_temps(sb_ids, session)
         stop = perf_counter()
         print(f"total time taken {stop - start} seconds")
         avg = sum(results) / len(results)
         return round(avg, 3)
+
+
+async def get_all_sense_box_temps(sb_ids: list, session):
+    loop = asyncio.get_event_loop()
+    futures = [
+        loop.run_in_executor(None, get_sense_box_temp, sb_id, session) for sb_id in sb_ids
+    ]
+
+    results = await asyncio.gather(*futures)
+    # filter out null results
+    return [float(result) for result in results if result is not None]
 
 
 def get_sense_box_temp(sb_id: str, session):
