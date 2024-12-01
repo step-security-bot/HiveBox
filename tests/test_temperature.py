@@ -5,7 +5,8 @@ from mock import patch
 import requests
 import requests_mock
 import json
-from ..src.endpoints import temperature
+from hivebox.src.endpoints import temperature
+#from ..src.endpoints.temperature import get_sense_box_temp as get_sense_box_temp
 
 #pytest_plugins = ('pytest_asyncio',)
 
@@ -65,10 +66,9 @@ def test_get_sense_box_temp_bad():
 
 
 @pytest.mark.asyncio
-@patch("src.endpoints.temperature.get_sense_box_temp")
-async def test_get_all_sense_box_temps(get_sense_box_temp):
+@patch("hivebox.src.endpoints.temperature.get_sense_box_temp",  side_effect=[10, 15])
+async def test_get_all_sense_box_temps(mock_get_sense_box_temp):
     # We mock the response, so we don't need a valid session object
     session = ""
     sb_ids = ["5ad4cf6d223bd8001939172d", "5ad4cfdc223bd80019392774"]
-    get_sense_box_temp.return_value.get_sense_box_temp.return_value = 10
     assert await temperature.get_all_sense_box_temps(sb_ids, session) == [10, 15]
