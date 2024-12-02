@@ -1,5 +1,6 @@
 from fastapi import FastAPI
-from endpoints import version, temperature
+
+from endpoints import temperature, version
 
 app = FastAPI()
 
