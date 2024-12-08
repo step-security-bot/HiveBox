@@ -1,3 +1,5 @@
+"""Module containing functions for interacting with temperature data from the OpenSenseMap API."""
+
 import asyncio
 from datetime import datetime
 from time import perf_counter
@@ -11,9 +13,11 @@ import requests
 
 async def avg_temperature():
     """
-    Returns the average temperatures in Celcius for sense boxes which have a valid temperature measurement.
+    Args:
+        None
 
-    Parameters: None
+    Returns:
+        Average temparature (°C) over the last hour
 
     """
     start = perf_counter()
@@ -30,10 +34,15 @@ async def avg_temperature():
 
 async def get_all_sense_box_temps(sb_ids: list, session):
     """
-    Returns the average temperatures in Celcius for sense boxes which have a valid temperature measurement.
+    Args:
+        sb_ids:
+          A list of SenseBox IDs to get temperatures from
+        session:
+          A requests.session object to make requests against
 
-    Parameters: sb_ids: a list of SenseBox IDs to get temperatures from
-                session: a session object to make requests against
+    Returns :
+        A list of temperatures (°C) for sense boxes which have a valid temperature measurement.
+
     """
     loop = asyncio.get_event_loop()
     futures = [
@@ -48,9 +57,14 @@ async def get_all_sense_box_temps(sb_ids: list, session):
 
 def get_sense_box_temp(sb_id: str, session):
     """
-    Returns the temperature for a given sense box ID.
+    Args:
+        sb_id:
+          ID of the sense box
+        session:
+          A requests.session object to make requests against
 
-    Parameters: sb_id: ID of the sense box
+    Returns:
+        The temperature (°C) for a given sense box ID.
 
     """
     url = "https://api.opensensemap.org/boxes/"
@@ -59,21 +73,26 @@ def get_sense_box_temp(sb_id: str, session):
     response = session.get(url + sb_id)
     response = response.json()
 
-    # NOTE: Need to check lastMeasurement of this sensor specifically or we'll return stale results in some cases
+    # NOTE: Add check lastMeasurement of this sensor specifically or we might return stale data
     # Loop over sensors list in the response
     for sensor in response["sensors"]:
-        # if "temp" is in the title of the sensor, we can assume it is measuring temperature. We also check that the lastMeasurement exists so we don't collect NoneType results
+        # If "temp" is in the title of the sensor, we can assume it is measuring temperature.
+        # We also check that the lastMeasurement exists so we don't collect NoneType results
         if "temp" in sensor["title"].casefold() and sensor["lastMeasurement"]:
             stop = perf_counter()
             print(f"Api call for sb_id {sb_id} took {stop - start} seconds")
             return sensor["lastMeasurement"]["value"]
 
+    return None
+
 
 def recent_sense_boxes(sense_boxes: list):
     """
-    Returns a list of sense box IDs, for sense boxes that have an updatedAt property of less than or equal to 1 hour
-
-    Parameters: sense_boxes: a list of dicts containing sense box data
+    Args:
+        sense_boxes:
+          A list of dicts containing sense box data from get_open_sense_boxes
+    Returns:
+        A list of sense box IDs, for sense boxes that have been updated in the last hour
 
     """
     recent_boxes = []
@@ -94,9 +113,12 @@ def recent_sense_boxes(sense_boxes: list):
 
 def get_open_sense_boxes(session):
     """
-    Returns a list of sense boxes within the specified bounding box
+    Args:
+        session:
+          A requests.session object to make requests against
 
-    Parameters: session: a valid session object to make requests against
+    Returns:
+        A list of sense boxes within the specified bounding box
 
     """
     url = "https://api.opensensemap.org/boxes"
