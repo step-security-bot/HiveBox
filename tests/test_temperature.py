@@ -1,3 +1,5 @@
+"""Module testing the temperature module."""
+
 import json
 
 import pytest
@@ -9,7 +11,8 @@ from hivebox.src.endpoints import temperature
 
 
 def test_get_open_sense_boxes():
-    with open("tests/mock_data.json", "r") as file:
+    """Test that we can get a list of open sense boxes."""
+    with open("tests/mock_data.json", "r", encoding="utf-8") as file:
         data = json.load(file)
         session = requests.Session()
 
@@ -28,21 +31,22 @@ def test_get_open_sense_boxes():
 
 
 def test_recent_sense_boxes():
-    with open("tests/mock_data.json", "r") as file:
+    """Test that we can get a list of recently updated sense boxes."""
+    with open("tests/mock_data.json", "r", encoding="utf-8") as file:
         data = list(json.load(file))
         results = temperature.recent_sense_boxes(data)
 
     # Verify return type of function
-    assert type(results) is list
+    assert isinstance(results, list)
 
     # Verify length of results based on mocked data
     assert len(results) == 9
 
 
-# Verify an ID with a valid, recent temp measurement returns that measurement
 def test_get_sense_box_temp_good():
+    """Test that an ID with a valid, recent temp measurement returns that measurement"""
     sb_id = "5ad4cf6d223bd8001939172d"
-    with open(f"tests/mock_{sb_id}.json", "r") as file:
+    with open(f"tests/mock_{sb_id}.json", "r", encoding="utf-8") as file:
         data = json.load(file)
         session = requests.Session()
 
@@ -51,10 +55,10 @@ def test_get_sense_box_temp_good():
             assert temperature.get_sense_box_temp(sb_id, session) == "20.40"
 
 
-# Verify an ID with no recent temp measurement returns None
 def test_get_sense_box_temp_bad():
+    """Test that an ID with no recent temp measurement returns None"""
     sb_id = "5ad4cfdc223bd80019392774"
-    with open(f"tests/mock_{sb_id}.json", "r") as file:
+    with open(f"tests/mock_{sb_id}.json", "r", encoding="utf-8") as file:
         data = json.load(file)
         session = requests.Session()
 
@@ -63,17 +67,15 @@ def test_get_sense_box_temp_bad():
             assert temperature.get_sense_box_temp(sb_id, session) is None
 
 
-# Verify we can get a list of temps
 @pytest.mark.asyncio
 @patch("hivebox.src.endpoints.temperature.get_sense_box_temp", side_effect=[10, 15])
-async def test_get_all_sense_box_temps(mock_get_sense_box_temp):
-    # We mock the response from get_sense_box_temp, so we don't need a valid session object. The IDs are also arbitrary
+async def test_get_all_sense_box_temps(mock_get_sense_box_temp):  # pylint: disable=unused-argument
+    """Test that we can get a list of temps. Session / IDs are mocked and don't need to be valid."""  # pylint: disable=line-too-long
     session = ""
     sb_ids = ["5ad4cf6d223bd8001939172d", "5ad4cfdc223bd80019392774"]
     assert await temperature.get_all_sense_box_temps(sb_ids, session) == [10, 15]
 
 
-# Verify the top-level function runs as expected
 @pytest.mark.asyncio
 @patch(
     "hivebox.src.endpoints.temperature.get_all_sense_box_temps", return_value=[10, 15]
@@ -87,11 +89,15 @@ async def test_get_all_sense_box_temps(mock_get_sense_box_temp):
     "hivebox.src.endpoints.temperature.get_open_sense_boxes",
     side_effect=["box1", "box2", "box3"],
 )
+# pylint: disable=unused-argument
 async def test_avg_temperature(
     mock_get_open_sense_boxes,
     mock_recent_sense_boxes,
     mock_get_sense_box_temp,
     mock_get_all_sense_box_temps,
 ):
+    """Test that we can get an average temperature by calling the main temperature function.
+    All return values are mocked for now, though this may change.
+    """
     results = await temperature.avg_temperature()
     assert results == 12.5
