@@ -17,6 +17,9 @@ jobs:
       - uses: jbergstroem/hadolint-gh-action@v1
         with:
           dockerfile: .Dockerfile
+          error_level: 0 # fail on errors
+          output_format: tty
+          annotate: true
 
       - name: Update Pull Request
         uses: actions/github-script@v6
@@ -26,7 +29,7 @@ jobs:
             const output = `
             #### Hadolint: \`${{ steps.hadolint.outcome }}\`
             \`\`\`
-            ${process.env.HADOLINT_RESULTS}
+            ${process.env.hadolint_output}
             \`\`\`
             `;
 
