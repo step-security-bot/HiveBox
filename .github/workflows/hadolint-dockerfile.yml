@@ -4,8 +4,9 @@ on:
   pull_request:
 
 jobs:
-  build:
+  hadolint:
     runs-on: ubuntu-latest
+    name: hadolint
     permissions:
       packages: read
       contents: read
@@ -13,7 +14,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: hadolint/hadolint-action@v3.1.0
+      - uses: jbergstroem/hadolint-gh-action@v1
         with:
           dockerfile: .Dockerfile
 
