@@ -21,21 +21,26 @@ jobs:
           output_format: tty
           annotate: true
 
-      - name: Update Pull Request
-        uses: actions/github-script@v6
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-            const output = `
-            #### Hadolint: \`${{ steps.hadolint.outcome }}\`
-            \`\`\`
-            ${process.env.hadolint_output}
-            \`\`\`
-            `;
+      - name: Dump vars context
+        env:
+          VARS_JSON: ${{ toJSON(vars) }}
+        run: echo "${VARS_JSON}"
 
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: output
-            })
+      #- name: Update Pull Request
+      #  uses: actions/github-script@v6
+      #  if: github.event_name == 'pull_request'
+      #  with:
+      #    script: |
+      #      const output = `
+      #      #### Hadolint: \`${{ steps.hadolint.outcome }}\`
+      #      \`\`\`
+      #      ${process.env.hadolint_output}
+      #      \`\`\`
+      #      `;
+
+      #      github.rest.issues.createComment({
+      #        issue_number: context.issue.number,
+      #        owner: context.repo.owner,
+      #       repo: context.repo.repo,
+      #        body: output
+      #     })
