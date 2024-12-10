@@ -5,6 +5,7 @@ on:
 
 jobs:
   hadolint:
+  - name: hadolint
     runs-on: ubuntu-latest
     name: hadolint
     permissions:
@@ -13,35 +14,16 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: hadolint
-      - uses: actions/checkout@v3
-      - uses: jbergstroem/hadolint-gh-action@v1
-        with:
-          dockerfile: .Dockerfile
-          error_level: 0 # fail on errors
-          output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
-          annotate: true
+        - id: hadolint
+        - uses: actions/checkout@v3
+        - uses: jbergstroem/hadolint-gh-action@v1
+    with:
+      dockerfile: .Dockerfile
+      error_level: 0 # fail on errors
+      output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
+      annotate: true
 
-      - name: Dump hadolint output
-        env:
-          HADOLINT_OUTPUT: ${{ steps.hadolint.outputs.hadolint_output }}
-        run: echo "${HADOLINT_OUTPU}"
-
-      #- name: Update Pull Request
-      #  uses: actions/github-script@v6
-      #  if: github.event_name == 'pull_request'
-      #  with:
-      #    script: |
-      #      const output = `
-      #      #### Hadolint: \`${{ steps.hadolint.outcome }}\`
-      #      \`\`\`
-      #      ${process.env.hadolint_output}
-      #      \`\`\`
-      #      `;
-
-      #      github.rest.issues.createComment({
-      #        issue_number: context.issue.number,
-      #        owner: context.repo.owner,
-      #       repo: context.repo.repo,
-      #        body: output
-      #     })
+  - name: Dump hadolint output
+    env:
+      HADOLINT_OUTPUT: ${{ steps.hadolint.outputs.hadolint_output }}
+    run: echo "${HADOLINT_OUTPUT}"
