@@ -14,16 +14,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - id: hadolint
-        uses: jbergstroem/hadolint-gh-action@v1
+      - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: .Dockerfile
-          error_level: 2 # fail on errors
-          output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
-          annotate: true
 
 
-      - name: Dump hadolint output
-        env:
-          HADOLINT_OUTPUT: ${{ steps.hadolint.outputs.hadolint_output }}
-        run: echo "${HADOLINT_OUTPUT}"
+      #- name: Dump hadolint output
+      #  env:
+      #    HADOLINT_OUTPUT: ${{ steps.hadolint.outputs.hadolint_output }}
+      #  run: echo "${HADOLINT_OUTPUT}"
