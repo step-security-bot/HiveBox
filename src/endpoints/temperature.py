@@ -1,7 +1,7 @@
 """Module containing functions for interacting with temperature data from the OpenSenseMap API."""
 
 import asyncio
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import perf_counter
 
 import requests
@@ -102,9 +102,10 @@ def recent_sense_boxes(sense_boxes: list):
     now_dt = datetime.strptime(now_str, "%Y-%m-%dT%H:%M:%S.%fZ")
 
     for sense_box in sense_boxes:
-        sensor_time = sense_box["updatedAt"]
+        sensor_time = sense_box["lastMeasurementAt"]
         sensor_dt = datetime.strptime(sensor_time, "%Y-%m-%dT%H:%M:%S.%fZ")
-        if now_dt.hour - sensor_dt.hour <= 1:
+
+        if now_dt - sensor_dt <= timedelta(hours=1):
             recent_boxes.append(sense_box["_id"])
     stop = perf_counter()
     print(f"filtering results took {stop - start} seconds")

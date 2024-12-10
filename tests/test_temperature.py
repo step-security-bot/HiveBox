@@ -2,9 +2,11 @@
 
 import json
 
+from datetime import datetime, timedelta
 import pytest
 import requests
 import requests_mock
+
 from mock import patch
 
 from hivebox.src.endpoints import temperature
@@ -24,7 +26,7 @@ def test_get_open_sense_boxes():
     assert type(results) is type(data)
 
     # Verify length of results from function matches length of mocked data
-    assert len(results) == len(data)
+    assert len(results) == len(data) == 9
 
     # Verify contents of results from function matches contents of mocked data
     assert results == data
@@ -32,15 +34,35 @@ def test_get_open_sense_boxes():
 
 def test_recent_sense_boxes():
     """Test that we can get a list of recently updated sense boxes."""
-    with open("tests/mock_data.json", "r", encoding="utf-8") as file:
-        data = list(json.load(file))
-        results = temperature.recent_sense_boxes(data)
+    #with open("tests/mock_data.json", "r", encoding="utf-8") as file:
+    #    data = list(json.load(file))
+
+    now_str = datetime.now().isoformat(timespec="milliseconds") + "Z"
+    now_dt = datetime.strptime(now_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    old_data_str = datetime.strftime(now_dt - timedelta(hours = 2), "%Y-%m-%dT%H:%M:%S.%f")
+    print(f"{now_dt - timedelta(hours = 1)}Z")
+    mock_data = [
+        {
+            "_id": "5ad4cf6d223bd8001939172d",
+            "lastMeasurementAt": f"{now_str}"
+        },
+        {
+            "_id": "5ad4cf6d223bd8001939172e",
+            "lastMeasurementAt": f"{now_str}"
+        },
+        {
+            "_id": "5ad4cf6d223bd8001939172f",
+            "lastMeasurementAt": f"{old_data_str}Z"
+        }
+    ]
+
+    results = temperature.recent_sense_boxes(mock_data)
 
     # Verify return type of function
     assert isinstance(results, list)
 
     # Verify length of results based on mocked data
-    assert len(results) == 9
+    assert len(results) == 2
 
 
 def test_get_sense_box_temp_good():
