@@ -13,14 +13,15 @@ jobs:
       pull-requests: write
 
     steps:
-      - id: hadolint
       - uses: actions/checkout@v3
-      - uses: jbergstroem/hadolint-gh-action@v1
+      - id: hadolint
+        uses: jbergstroem/hadolint-gh-action@v1
         with:
           dockerfile: .Dockerfile
           error_level: 0 # fail on errors
           output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
           annotate: true
+
 
       - name: Dump hadolint output
         env:
