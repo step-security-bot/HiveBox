@@ -23,8 +23,8 @@ jobs:
 
       - name: Dump vars context
         env:
-          VARS_JSON: ${{ toJSON(vars) }}
-        run: echo "${VARS_JSON}"
+          HADOLINT_JSON: ${{ toJSON(hadolint_output) }}
+        run: echo "${HADOLINT_JSON}"
 
       #- name: Update Pull Request
       #  uses: actions/github-script@v6
