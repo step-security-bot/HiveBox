@@ -18,7 +18,7 @@ jobs:
         uses: jbergstroem/hadolint-gh-action@v1
         with:
           dockerfile: .Dockerfile
-          error_level: 0 # fail on errors
+          error_level: 2 # fail on errors
           output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
           annotate: true
 
