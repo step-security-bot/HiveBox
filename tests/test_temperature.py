@@ -34,26 +34,19 @@ def test_get_open_sense_boxes():
 
 def test_recent_sense_boxes():
     """Test that we can get a list of recently updated sense boxes."""
-    #with open("tests/mock_data.json", "r", encoding="utf-8") as file:
-    #    data = list(json.load(file))
 
     now_str = datetime.now().isoformat(timespec="milliseconds") + "Z"
     now_dt = datetime.strptime(now_str, "%Y-%m-%dT%H:%M:%S.%fZ")
-    old_data_str = datetime.strftime(now_dt - timedelta(hours = 2), "%Y-%m-%dT%H:%M:%S.%f")
-    print(f"{now_dt - timedelta(hours = 1)}Z")
+    old_data_str = datetime.strftime(
+        now_dt - timedelta(hours=2), "%Y-%m-%dT%H:%M:%S.%f"
+    )
+
     mock_data = [
-        {
-            "_id": "5ad4cf6d223bd8001939172d",
-            "lastMeasurementAt": f"{now_str}"
-        },
-        {
-            "_id": "5ad4cf6d223bd8001939172e",
-            "lastMeasurementAt": f"{now_str}"
-        },
-        {
-            "_id": "5ad4cf6d223bd8001939172f",
-            "lastMeasurementAt": f"{old_data_str}Z"
-        }
+        {"_id": "5ad4cf6d223bd8001939172d", "lastMeasurementAt": f"{now_str}"},
+        {"_id": "5ad4cf6d223bd8001939172e", "lastMeasurementAt": f"{now_str}"},
+        {"_id": "5ad4cf6d223bd8001939172f", "badKey": f"{now_str}"},
+        {"_id": "5ad4cf6d223bd8001939172g"},
+        {"_id": "5ad4cf6d223bd8001939172h", "lastMeasurementAt": f"{old_data_str}Z"},
     ]
 
     results = temperature.recent_sense_boxes(mock_data)
