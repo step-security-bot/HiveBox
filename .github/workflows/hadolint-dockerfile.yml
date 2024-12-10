@@ -13,18 +13,19 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: hadolint
       - uses: actions/checkout@v3
       - uses: jbergstroem/hadolint-gh-action@v1
         with:
           dockerfile: .Dockerfile
           error_level: 0 # fail on errors
-          output_format: tty
+          output_format: tty # output hadolint_output= >> $GITHUB_OUTPUT
           annotate: true
 
-      - name: Dump vars context
+      - name: Dump hadolint output
         env:
-          HADOLINT_JSON: ${{ toJSON(hadolint_output) }}
-        run: echo "${HADOLINT_JSON}"
+          HADOLINT_OUTPUT: ${{ steps.hadolint.outputs.hadolint_output }}
+        run: echo "${HADOLINT_OUTPU}"
 
       #- name: Update Pull Request
       #  uses: actions/github-script@v6
