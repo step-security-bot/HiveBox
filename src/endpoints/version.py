@@ -2,7 +2,6 @@
 
 VERSION = "0.0.7"
 
-
 def list_version():
     """
     Args: None
