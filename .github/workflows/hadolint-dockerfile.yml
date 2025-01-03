@@ -2,6 +2,8 @@ name: Lint Dockerfile
 
 on:
   pull_request:
+    paths:
+      - .Dockerfile
 
 jobs:
   hadolint:
