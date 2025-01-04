@@ -14,14 +14,17 @@ To run this API locally, navigate to `src` and run `fastapi dev` from a command-
 
 ### Docker Build
 #### Build and run the image locally
-Go to the root directory and run `docker build . -f .Dockerfile -t hivebox:local` (replace the `local` tag with something else if desired)
-Run `docker run -p 8000:8000 hivebox:local`
-Navigate to <http://127.0.0.1:8000> to view the running container's API.
+1 - Go to the root directory and run `docker build . -f .Dockerfile -t hivebox:local` (replace the `local` tag with something else if desired)
+
+2 - Run `docker run -p 8000:8000 hivebox:local`
+
+3 - Navigate to <http://127.0.0.1:8000> to view the running container's API.
 
 
 #### Docker run from Docker Hub
-Go to the root directory and run `docker run --name hivebox -p 8000:8000 darianhuotari/hivebox-integration-api:latest`
-Navigate to <http://127.0.0.1:8000> to view the running container's API.
+1 - Go to the root directory and run `docker run --name hivebox -p 8000:8000 darianhuotari/hivebox-integration-api:latest`
+
+2 - Navigate to <http://127.0.0.1:8000> to view the running container's API.
 
 ## Testing:
 [Hadolint](https://github.com/hadolint/hadolint) is used to lint the Dockerfile.
