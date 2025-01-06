@@ -12,6 +12,6 @@ sleep 10
 STATUSCODE=$(curl -silent -output /dev/null -w "%{http_code}" http://localhost:8000/version)
 
 if test $STATUSCODE -ne 200; then
-    echo '/version endpoint call failed; exiting...'
-    exit 1
+    echo '/version endpoint call failed; exiting...';
+    exit 1;
 fi
