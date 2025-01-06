@@ -31,6 +31,15 @@ jobs:
           
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
+      - name: Make shell script executable
+        run: chmod +x ${PWD}/scripts/build_test_image.sh
+
+      - name: Build and smoke test Docker image
+        run: ${PWD}/scripts/build_test_image.sh
+
+      ##- name: Test Docker image
+      ##  run: ${PWD}/scripts/check_container.sh
         
 
       - name: Build and push Docker image
