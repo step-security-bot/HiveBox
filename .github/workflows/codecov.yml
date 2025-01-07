@@ -3,6 +3,9 @@ name: Codecov
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   codecov:
     runs-on: ubuntu-latest
@@ -13,9 +16,14 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@main
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@cbb722410c2e876e24abbe8de2cc27693e501dcb # main
       - name: Setup Python
-        uses: actions/setup-python@main
+        uses: actions/setup-python@3fddbee7870211eda9047db10474808be43c71ec # main
         with:
           python-version: 3.12
       - name: Generate coverage report
